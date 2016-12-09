@@ -1,0 +1,34 @@
+group 'imgscrapper'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.6
+
+mainClassName = 'imgscrapper.Main'
+
+repositories {
+    mavenCentral()
+}
+
+task uberjar(type: Jar) {
+    from files(sourceSets.main.output.classesDir)
+    from { configurations.compile.collect { zipTree(it) } } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    manifest {
+        sourceSets.main.java.srcDirs = ['Main/src']
+        attributes 'Main-Class': 'imgscrapper.Main'
+
+    }
+}
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'org.jsoup:jsoup:1.9.2'
+    compile 'com.intellij:forms_rt:7.0.3'
+
+
+}
